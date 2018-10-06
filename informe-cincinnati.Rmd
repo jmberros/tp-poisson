@@ -1,0 +1,142 @@
+---
+title: "Incendios en Cincinnati"
+authors: Rognon & Duarte & Berros
+output: html_notebook
+---
+
+Cargamos algunas librerías útiles:
+
+```{r}
+library(MASS)
+library(tidyverse)
+library(lubridate)
+library(glue)
+library(here)
+library(gghighlight)
+```
+
+```{r}
+fn <- here("data/Cincinnati_Fire_Incidents__CAD___including_EMS__ALS_BLS_.csv")
+
+full_incidents <- read_csv(fn)
+```
+
+
+```{r}
+
+# chosen_incident <- "STUCK IN ELEVATOR"
+# chosen_incident <- "HEROIN OVERDOSE"
+chosen_incident <- "SUICIDE ATTEMPT"
+
+full_incidents %>% select(ADDRESS_X)
+
+incidents <-
+  full_incidents %>%
+  select(
+    CREATE_TIME_INCIDENT,
+    CFD_INCIDENT_TYPE_GROUP) %>%
+  rename(
+    time = CREATE_TIME_INCIDENT,
+    type = CFD_INCIDENT_TYPE_GROUP) %>%
+  filter(!is.na(type) & type == chosen_incident) %>%
+  select(time) %>%
+  mutate(time = as.POSIXct(time,
+                           format = "%m/%d/%Y %I:%M:%S %p",
+                           tz = "UTC")) %>%
+  mutate(day = floor_date(time, "day"))
+```
+
+Exploramos el rango de tiempo:
+
+```{r}
+range <-
+  incidents %>%
+  summarise(
+    max_date = max(time),
+    min_date = min(time))
+
+daily_incidents <-
+  incidents %>%
+  
+  count(day) %>%
+  select(n)
+  
+total_days <- as.integer(max(incidents$day) - min(incidents$day))
+
+print(range)
+```
+
+Tenemos aproximadamente 3 años de datos, con `r nrow(incidents)` casos,
+repartidos en `r total_days` días, de modo que vamos a agrupar por día los
+datos.
+
+Agregamos los días sin llamadas:
+
+```{r}
+missing_days <- as.integer(total_days) - nrow(daily_incidents)
+daily_incidents <-
+  rbind(tibble(n = rep(0, missing_days)), daily_incidents) %>%
+  mutate(n = as.integer(n))
+```
+
+```{r}
+fig <-
+  daily_incidents %>%
+  ggplot() +
+  geom_density(aes(x = n)) +
+  # stat_function(
+  #   geom = "point",
+  #   n = length(daily_incidents$n %>% unique),
+  #   fun = "dpois",
+  #   args = list(lambda = lambda_est)) +
+  labs(
+    title = "Densidad de la cantidad de llamadas diarias")
+
+print(fig)
+```
+
+```{r}
+lambda_est <- round(mean(daily_incidents$n), 2)
+```
+
+Calculamos $\hat{\lambda} = \bar{X}_{n} =$ `r lambda_est`. En este caso
+el estimador basado en el primer momento de $X$ y el estimador de máxima
+verosimilitud coinciden.
+
+```{r}
+max_n <- max(daily_incidents$n)
+min_n <- min(daily_incidents$n)
+
+bn_size_est <- 3.79
+
+known_densities <-
+  tibble(
+    n = seq(min_n, max_n),
+    poisson = dpois(n, lambda_est),
+    binomial_neg = dnbinom(x = n, size = bn_size_est, mu = lambda_est))
+
+fig +
+  geom_point(
+    data = known_densities,
+    aes(x = n, y = poisson), color = "RoyalBlue") +
+  geom_point(
+    data = known_densities,
+    aes(x = n, y = binomial_neg), color = "Tomato")
+
+# daily_incidents %>%
+#   mutate(poisson_probability = ppois(n, lambda_est))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
