@@ -1,0 +1,90 @@
+---
+title: "TP: Picos de precio"
+output: html_notebook
+authors: Rognon & Duarte & Berros
+---
+
+Cargamos algunas librerías útiles:
+
+```{r, results = F, message = F}
+library(tidyverse)
+library(glue)
+library(here)
+```
+
+Leemos los datasets:
+
+```{r}
+source(here("R/leer_datasets.R"))
+
+deseason_prices <- read_dataset("data/deseasonalized_prices.csv")
+raw_prices <- read_dataset("data/intraday_prices.cleaned.csv")
+```
+
+Exploramos los datos:
+
+```{r}
+fig <-
+  raw_prices %>%
+  ggplot() +
+    geom_point(aes(x = obs_id, y = price), size = .5) +
+    labs(
+      title = "Precio sin desestacionalizar",
+      x = "Observación",
+      y = "Precio")
+
+ggsave(here("results/precio_sin_desestacionalizar.png"))
+print(fig)
+```
+
+```{r}
+fig <-
+  deseason_prices %>%
+  ggplot() +
+  geom_point(aes(x = obs_id, y = price), size = .5)
+
+print(fig)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
