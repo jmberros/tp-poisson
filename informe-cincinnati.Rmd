@@ -19,22 +19,26 @@ library(gghighlight)
 fn <- here("data/Cincinnati_Fire_Incidents__CAD___including_EMS__ALS_BLS_.csv")
 
 full_incidents <- read_csv(fn)
+
+type_of_incidents <-
+  full_incidents %>% count(CFD_INCIDENT_TYPE_GROUP) %>% arrange(-n)
 ```
 
 
 ```{r}
 
-# chosen_incident <- "STUCK IN ELEVATOR"
+chosen_incident <- "STUCK IN ELEVATOR"
 # chosen_incident <- "HEROIN OVERDOSE"
-chosen_incident <- "SUICIDE ATTEMPT"
-
-full_incidents %>% select(ADDRESS_X)
+# chosen_incident <- "SUICIDE ATTEMPT"
+# chosen_incident <- "NULL"
 
 incidents <-
   full_incidents %>%
   select(
     CREATE_TIME_INCIDENT,
     CFD_INCIDENT_TYPE_GROUP) %>%
+  mutate(CFD_INCIDENT_TYPE_GROUP = map_chr(CFD_INCIDENT_TYPE_GROUP,
+                                           ~ifelse(is.na(.x), "NULL", .x))) %>%
   rename(
     time = CREATE_TIME_INCIDENT,
     type = CFD_INCIDENT_TYPE_GROUP) %>%
@@ -79,24 +83,26 @@ daily_incidents <-
   mutate(n = as.integer(n))
 ```
 
+
 ```{r}
-fig <-
+daily_incidents_freq <-
   daily_incidents %>%
-  ggplot() +
-  geom_density(aes(x = n)) +
-  # stat_function(
-  #   geom = "point",
-  #   n = length(daily_incidents$n %>% unique),
-  #   fun = "dpois",
-  #   args = list(lambda = lambda_est)) +
-  labs(
-    title = "Densidad de la cantidad de llamadas diarias")
+    count(n) %>%
+    rename(count = nn) %>%
+    mutate(density = count / nrow(daily_incidents))
 
-print(fig)
-```
-
-```{r}
 lambda_est <- round(mean(daily_incidents$n), 2)
+
+fig <-
+  daily_incidents_freq %>%
+  ggplot() +
+  aes(x = n, y = density) +
+  geom_point() +
+  geom_line() +
+  labs(title = glue("Densidad de la cantidad de {chosen_incident}"))
+
+print(glue("El lambda estimado es: {lambda_est}"))
+print(fig)
 ```
 
 Calculamos $\hat{\lambda} = \bar{X}_{n} =$ `r lambda_est`. En este caso
@@ -107,7 +113,8 @@ verosimilitud coinciden.
 max_n <- max(daily_incidents$n)
 min_n <- min(daily_incidents$n)
 
-bn_size_est <- 3.79
+fit <- fitdistr(daily_incidents$n, densfun = "negative binomial")
+bn_size_est <- fit$estimate[["size"]]
 
 known_densities <-
   tibble(
@@ -119,12 +126,22 @@ fig +
   geom_point(
     data = known_densities,
     aes(x = n, y = poisson), color = "RoyalBlue") +
-  geom_point(
+  geom_line(
     data = known_densities,
-    aes(x = n, y = binomial_neg), color = "Tomato")
+    aes(x = n, y = poisson), color = "RoyalBlue") +
+  geom_point(
+     data = known_densities,
+     aes(x = n, y = binomial_neg), color = "Tomato") +
+  geom_line(
+     data = known_densities,
+     aes(x = n, y = binomial_neg), color = "Tomato")
 
-# daily_incidents %>%
-#   mutate(poisson_probability = ppois(n, lambda_est))
+
+# Wrappear todo esto con una función que acepte de input
+# el nombre de un tipo de incidente
+# y dé como output una lista con esta última figura y la tabla con la que
+# fue generada
+
 ```
 
 
