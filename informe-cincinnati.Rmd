@@ -1,7 +1,9 @@
 ---
-title: "Incidentes en Cincinnati 💀🔥"
+title: "Incidentes en Cincinnati \U0001F480\U0001F525"
+output:
+  html_document:
+    df_print: paged
 authors: Rognon & Duarte & Berros
-output: html_notebook
 ---
 
 Cargamos algunas librerías útiles:
@@ -42,12 +44,10 @@ n_per_incident_type <- count_incidents_per_type(full_incidents)
 ```
 
 ```{r}
-keep_incidents_of_type <- function(chosen_incident_type) {
+keep_incidents_of_type <- function(chosen_type) {
   full_incidents %>%
-    select(
-      incident_type,
-      incident_time) %>%
-    filter(incident_type == chosen_incident_type) %>%
+    select(incident_type, incident_time) %>%
+    filter(incident_type == chosen_type) %>%
     select(incident_time) %>%
     mutate(incident_time = as.POSIXct(incident_time,
                                       format = "%m/%d/%Y %I:%M:%S %p",
@@ -57,12 +57,12 @@ keep_incidents_of_type <- function(chosen_incident_type) {
 
 compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type) {
   chosen_incidents <- keep_incidents_of_type(chosen_incident_type)
-  
+
   daily_incidents_count <-
     chosen_incidents %>%
     count(incident_day) %>%
     select(n)
-  
+
   # Agregamos los días sin llamadas (días que no aparecen en el dataset)
   # como filas de ceros:
   max_day <- max(chosen_incidents$incident_day)
@@ -73,35 +73,35 @@ compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type) {
   daily_incidents_count <-
     rbind(tibble(n = rep(0, missing_days)), daily_incidents_count) %>%
     mutate(n = as.integer(n))
-  
+
   # Frecuencia de frecuencias: contamos cuántos días tienen 0 llamadas,
   # cuántos días tienen 1 llamada, ...
   daily_incidents_freq <-
-    daily_incidents %>%
+    daily_incidents_count %>%
       count(n) %>%
       rename(count = nn) %>%
       mutate(
-        density = count / nrow(daily_incidents),
+        density = count / nrow(daily_incidents_count),
         density_type = "empirical") %>%
       select(n, density_type, density)
-  
+
   # Safety check:
   assertthat::assert_that((near(sum(daily_incidents_freq$density), 1)))
   
   # Asumiendo distribución Poisson, estimamos el parámetro como la media muestral:
-  lambda_estimate <- mean(daily_incidents$n)
-  
+  lambda_estimate <- mean(daily_incidents_count$n)
+
   # Ajustamos el número de incidentes diario con la distribución Binomial Negativa
   # para comparar con la Poisson:
-  fit <- fitdistr(daily_incidents$n, densfun = "negative binomial")
+  fit <- fitdistr(daily_incidents_count$n, densfun = "negative binomial")
   bn_size_estimate <- fit$estimate[["size"]]
   # Obs: El parámetro "mu" de la parametrización alternativa de la distribución
   # BN se estima igual que el lambda de Poisson, con la media muestral.
   bn_mu_estimate <- lambda_estimate
-  
-  max_n <- max(daily_incidents$n)
-  min_n <- min(daily_incidents$n)
-  
+
+  max_n <- max(daily_incidents_count$n)
+  min_n <- min(daily_incidents_count$n)
+
   # Juntamos las densidades esperadas por Poisson y BN para cada n observado
   # para luego comparar con la densidad empírica:
   compute_density <- function(n, density_type, density_function) {
@@ -166,6 +166,8 @@ for (incident_type in n_per_incident_type$incident_type) {
   
   filename <- here(glue("results/{name}.png"))
   ggsave(filename, comparison$fig, width = 10, height = 6)
+  
+  print(comparison$fig)
 }
 ```
 
