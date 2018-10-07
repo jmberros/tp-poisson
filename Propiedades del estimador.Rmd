@@ -1,0 +1,87 @@
+---
+title: "Bootstrap Estimador"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Veamos la consistencia del estimador. Construimos una sucesion de estimadores de lambda con los n primeros valores de la muestra para n a de 20 hasta el tamaño de la muestra. Comparamos esos valores a la estimacion de lambda sobre toda la muestra, tomada como el valor real del parametro.
+
+```{r}
+library(knitr)
+knit("informe-cincinnati.Rmd",tangle=TRUE)
+source("informe-cincinnati.R")
+
+set.seed(42)
+muestra<-sample(daily_incidents$n,length(daily_incidents$n),replace = FALSE)
+delta_values<-c()
+for (i in 20:length(daily_incidents$n)){
+  delta_values<-c(delta_values,mean(mean(muestra[1:i])))
+}
+
+ggplot()+
+  geom_point(aes(x=20:length(daily_incidents$n),y=delta_values,colour="Sucesion de estimadores"))+
+  geom_hline(yintercept=lambda_est,colour="blue")+
+  labs(title="Consistencia del estimador", x="n", y="Estimaciones")+
+  theme(legend.position = "none")
+
+```
+
+
+Estudiemos la distribucion del estimador. Generamos por bootstrap una muestra de N estimaciones del parametro de Poisson
+
+```{r}
+dist_estimador_boot<-function(N){
+  set.seed(42)
+  estim_values<-c()
+  for (i in 1:N){
+    muestra<-sample(daily_incidents$n,length(daily_incidents$n),replace=TRUE)
+    estim_values<-c(estim_values,mean(muestra))
+  }
+  return(estim_values)
+}
+
+muestra_estim<-dist_estimador_boot(10000)
+
+fig<-ggplot()+
+      geom_density(aes(x=muestra_estim),color="RoyalBlue")+
+      labs(title = paste("Funcion de probabilidad de la muestra de estimador de Poisson con N=",10000),x="")
+print(fig)
+```
+
+La esperanza y la varianza del estimador estimadas sobre la muestra de valores obtenidas por Bootstrap son:
+
+```{r}
+paste("Esperanza=",mean(muestra_estim))
+paste("Estimacion de lambda:",lambda_est)
+
+paste("Varianza=",var(muestra_estim))
+paste("Cota de Rao-Cramer calculada con la estimacion de lambda=",lambda_est/length(daily_incidents$n))
+```
+Si la estimacion de lambda es correcta, se ve que el estimador es insesgado y alcanza la cota de Rao Cramer. Se ve IMVU.
+
+Veamos si el estimador es asintoticamente normal y eficiente.Comparamos la distribucion empirica del estimador a una normal con esperanza la estimacion de lambda y varianza la cota de Rao Cramer calculada con la estimacion de lambda.
+
+```{r}
+
+dist_asint<-function(N){
+  estim_values<-dist_estimador_boot(N)
+  fig<-ggplot()+
+      geom_density(aes(x=estim_values,color="Empirica"))+
+      stat_function(aes(x=c(min(estim_values),max(estim_values)),color="Normal"),fun=dnorm,args=list(mean=lambda_est,sd=sqrt(lambda_est/length(daily_incidents$n))))+
+    labs(title = paste("Densidad empirica del estimador con N=",N,"y la normal"), color="Densidad",x="")
+return(fig)
+}
+  
+print(dist_asint(1000))
+print(dist_asint(10000))
+print(dist_asint(50000))
+
+
+```
+
+El estimador se ve asintoticamente normal y eficiente.
+
+
+
