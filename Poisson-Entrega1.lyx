@@ -1,0 +1,524 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language spanish-mexico
+\language_package babel
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style french
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Distribución de Poisson
+\end_layout
+
+\begin_layout Section
+Estimador Basado en Momentos
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{1}{N}\sum_{i=1}^{N}X_{i}=\mathbb{E}_{\hat{\lambda}}\left(X_{1}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $X_{1}\sim\text{P}\left(\lambda\right)\Rightarrow\mathbb{E}\left(X_{1}\right)=\lambda$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula 
+\[
+\overline{X}=\hat{\lambda}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Estimador de Máxima Verosimilitud
+\end_layout
+
+\begin_layout Standard
+Lo hallamos tanto con verosimilitud como con logverosimilitud.
+\end_layout
+
+\begin_layout Subsection
+Con Verosimilitud
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+X\sim\text{P}\left(\lambda\right)\Rightarrow f_{X}\left(x\right)=\frac{e^{\lambda}\lambda^{-x}}{x!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\boldsymbol{X}=\left(X_{i}\right)_{i=1}^{N}/\forall i,j:\text{iid}\left(X_{i};X_{j}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\prod_{i=1}^{N}\frac{e^{\lambda}\lambda^{-x_{i}}}{x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-\sum_{i=1}^{N}x_{i}}e^{\sum_{i=1}^{N}\lambda}\prod_{i=1}^{N}\frac{1}{x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-N\overline{X}}e^{N\lambda}\cdot\left(\prod_{i=1}^{N}\frac{1}{x_{i}!}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\prod_{i=1}^{N}\frac{1}{x_{i}!}$
+\end_inset
+
+ es una constante que no introduce dificultad alguna, así que por un rato
+ la vamos a llamar arbitrariamente 
+\begin_inset Formula $C$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=C\cdot\left(-N\overline{X}\cdot\lambda^{-N\overline{X}-1}e^{N\lambda}+\lambda^{-N\overline{X}}\cdot Ne^{N\lambda}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\lambda}=\lambda\in\mathbb{R}/\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $A\cdot B=0\Rightarrow A=0\vee B=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\forall x_{i}\in\mathbb{N}:\frac{1}{x_{i}!}\neq0\Rightarrow C\neq0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+-N\overline{X}\cdot\hat{\lambda}^{-N\overline{X}-1}e^{N\hat{\lambda}}+\hat{\lambda}^{-N\overline{X}}\cdot Ne^{N\hat{\lambda}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{\lambda}^{-N\overline{X}-1}N\left(-\overline{X}e^{N\hat{\lambda}}+\hat{\lambda}e^{N\hat{\lambda}}\right)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\hat{\lambda}^{-N\overline{X}-1}N\neq0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+-\overline{X}e^{N\hat{\lambda}}+\lambda e^{N\hat{\lambda}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula 
+\[
+\overline{X}=\hat{\lambda}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Con Logverosimilitud
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-N\overline{X}}e^{N\lambda}\cdot\left(\prod_{i=1}^{N}\frac{1}{x_{i}!}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=-N\overline{X}\cdot\ln\left(\lambda\right)+N\lambda+\ln\left(\prod_{i=1}^{N}\frac{1}{x_{i}!}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial\lambda}\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=-\frac{N\overline{X}}{\lambda}+N+0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\lambda}=\lambda\in\mathbb{R}/\frac{\partial}{\partial\lambda}\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+-\frac{N\overline{X}}{\hat{\lambda}}+N=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{1}{\hat{\lambda}}=\frac{N}{N\overline{X}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula 
+\[
+\hat{\lambda}=\overline{X}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Propiedades del estimador 
+\begin_inset Formula $\overline{X}=\hat{\lambda}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Suficiencia
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\boldsymbol{X}=\left(X_{i}\right)_{i=1}^{N}/\forall i:X_{i}\sim\mathcal{P}\left(\lambda\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p\left(\boldsymbol{x};\lambda\right)=\prod_{i=1}^{N}\left[\frac{e^{-\lambda}\lambda^{x_{i}}}{x_{i}!}\underset{\mathbb{N}}{I}\left(x_{i}\right)\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p\left(\boldsymbol{x};\lambda\right)=e^{-n\lambda}\lambda^{\sum_{i=1}^{N}x_{i}}\cdot\prod_{i=1}^{N}\frac{\underset{\mathbb{N}}{I}\left(x_{i}\right)}{x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p\left(\boldsymbol{x};\lambda\right)=\underbrace{e^{-n\lambda}\lambda^{\frac{1}{n}\overline{X}}}_{g\left(\overline{X};\lambda\right)}\cdot\underbrace{\prod_{i=1}^{N}\frac{\underset{\mathbb{N}}{I}\left(x_{i}\right)}{x_{i}!}}_{h\left(\boldsymbol{x}\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es decir que una transformación 
+\begin_inset Formula $\boldsymbol{r}\left(\boldsymbol{X}\right)$
+\end_inset
+
+ que otorga un estimador suficiente es 
+\begin_inset Formula $r\left(\boldsymbol{x}\right)=\overline{X}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Es insesgado
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbb{E}_{\lambda}\left(\overline{X}\right)=\frac{1}{n}\sum_{i=1}^{N}\mathbb{E}_{\lambda}\left(X_{i}\right)=\frac{1}{n}\sum_{i=1}^{N}\lambda=\frac{n}{n}\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbb{E}_{\lambda}\left(\overline{X}\right)=\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Es consistente
+\end_layout
+
+\begin_layout Standard
+Dado que la muestra construida con eventos que siguen una distribución Poisson
+ cumple las hipótesis de tener elementos iid que siguen una distribución
+ tal que la esperanza de su módulo es finita,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{\lambda}=\frac{1}{N}\sum_{i=1}^{N}X_{i}\overset{\text{L.G.N.}}{\rightarrow}\mathbb{E}\left(X_{i}\right)=\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Error Cuadrático Medio
+\end_layout
+
+\begin_layout Standard
+Como los elementos 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ son iid:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Var}_{\lambda}\left(\frac{1}{N}\sum_{i=1}^{N}X_{i}\right)=\frac{1}{N^{2}}\sum_{i=1}^{N}X_{i}=\frac{1}{N}N\cdot\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Var}_{\lambda}\left(\frac{1}{N}\sum_{i=1}^{N}X_{i}\right)=\frac{\lambda}{N}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De lo cual:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{ECM}\left(\hat{\lambda}\right)=\frac{\lambda}{n}+0^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\lim_{n}\text{ECM}\left(\hat{\lambda}\right)=\lim\frac{\lambda}{n}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
