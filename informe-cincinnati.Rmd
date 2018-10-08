@@ -9,7 +9,7 @@ authors: Rognon & Duarte & Berros
 Cargamos algunas librerías útiles:
 
 ```{r}
-library(MASS) # WARNING: Import before tidyverse to keep dplyr's `select`
+library(MASS, pos = "package:base") # WARNING: Import before tidyverse to keep dplyr's `select`
 library(tidyverse)
 library(lubridate)
 library(glue)
