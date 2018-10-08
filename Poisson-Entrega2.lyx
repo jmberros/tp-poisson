@@ -3,7 +3,7 @@
 \begin_document
 \begin_header
 \save_transient_properties true
-\origin unavailable
+\origin /home/octavio/EstadísticaTeórica/tp-poisson/
 \textclass amsart
 \use_default_options true
 \begin_modules
@@ -83,7 +83,7 @@ figs-within-sections
 \begin_body
 
 \begin_layout Section
-Distribución a Posteriori
+Distribución a Posteriori si Consideramos que a priori es Exponencial
 \end_layout
 
 \begin_layout Itemize
@@ -99,7 +99,7 @@ No parece idóneo tomar la beta como distribución de los parámetros porque
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p\left(x|\boldsymbol{T}=t\right)=\frac{\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}}{\sum_{i=1}^{n}x_{i}!}\cdot\theta\cdot e^{-\theta\lambda}}{\int_{0}^{\infty}\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}}{\sum_{i=1}^{n}x_{i}!}\cdot\theta\cdot e^{-\theta\lambda}d\lambda}
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}}{\sum_{i=1}^{n}x_{i}!}\cdot\theta\cdot e^{-\theta\lambda}}{\int_{0}^{\infty}\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}}{\sum_{i=1}^{n}x_{i}!}\cdot\theta\cdot e^{-\theta\lambda}d\lambda}
 \]
 
 \end_inset
@@ -110,7 +110,7 @@ p\left(x|\boldsymbol{T}=t\right)=\frac{\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p\left(x|\boldsymbol{T}=t\right)=\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\theta\lambda}}{\int_{0}^{\infty}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\lambda\left(\theta+1\right)}d\lambda}
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\theta\lambda}}{\int_{0}^{\infty}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\lambda\left(\theta+1\right)}d\lambda}
 \]
 
 \end_inset
@@ -139,7 +139,7 @@ o una gamma
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p\left(x|\boldsymbol{T}=t\right)=\frac{e^{-\lambda}\lambda^{x}\cdot e^{-\theta\lambda}}{\frac{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}\cdot\underbrace{\int_{0}^{\infty}\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\lambda\left(\theta+1\right)}d\lambda}_{1}}
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{e^{-\lambda}\lambda^{x}\cdot e^{-\theta\lambda}}{\frac{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}\cdot\underbrace{\int_{0}^{\infty}\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\lambda\left(\theta+1\right)}d\lambda}_{1}}
 \]
 
 \end_inset
@@ -150,7 +150,44 @@ p\left(x|\boldsymbol{T}=t\right)=\frac{e^{-\lambda}\lambda^{x}\cdot e^{-\theta\l
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p\left(x|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\cdot e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\theta\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\cdot e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\theta\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\left(\theta+1\right)\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\left(\theta+1\right)\lambda}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es decir que la distribución es una gamma 
+\begin_inset Formula $\Lambda\sim\Gamma\left(\sum_{i=1}^{n}x_{i}+1;\theta+1\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Si Buscamos Maximizar la probabilidad:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\left(\theta+1\right)\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}
 \]
 
 \end_inset
@@ -161,7 +198,7 @@ p\left(x|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p\left(x|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\left(\theta+1\right)\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{1}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}}{e^{\left(\theta+1\right)\lambda}}
 \]
 
 \end_inset
@@ -172,7 +209,7 @@ p\left(x|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p\left(x|\boldsymbol{T}=t\right)=\frac{1}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}}{e^{\left(\theta+1\right)\lambda}}
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{\lambda^{\sum_{i=1}^{n}x_{i}}}{e^{\left(\theta+1\right)\lambda}}
 \]
 
 \end_inset
@@ -183,18 +220,7 @@ p\left(x|\boldsymbol{T}=t\right)=\frac{1}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\righ
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p\left(x|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{\lambda^{\sum_{i=1}^{n}x_{i}}}{e^{\left(\theta+1\right)\lambda}}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-p\left(x|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{e^{\sum_{i=1}^{n}x_{i}\ln\lambda}}{e^{\left(\theta+1\right)\lambda}}
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{e^{\sum_{i=1}^{n}x_{i}\ln\lambda}}{e^{\left(\theta+1\right)\lambda}}
 \]
 
 \end_inset

@@ -1,0 +1,976 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin /home/octavio/EstadísticaTeórica/tp-poisson/
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language spanish-mexico
+\language_package babel
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style french
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Distribución de Poisson
+\end_layout
+
+\begin_layout Section
+Estimador Basado en Momentos
+\end_layout
+
+\begin_layout Standard
+Dada una muestra aleatoria 
+\begin_inset Formula $X_{1},...,X_{n}\overset{iid}{\sim}\mathcal{P}(\lambda)$
+\end_inset
+
+, por la Ley Fuerte de los Grandes Números sabemos que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\overline{X}\xrightarrow[n\to\infty]{cs}\mathbb{E}_{\lambda}[X_{1}]=\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para obtener el estimador basado en el primer momento, igualamos:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\overline{X}=\hat{\lambda}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Estimador de Máxima Verosimilitud
+\end_layout
+
+\begin_layout Subsection
+Con verosimilitud 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+X\sim\text{P}\left(\lambda\right)\Rightarrow f_{X}\left(x\right)=\frac{e^{-\lambda}\lambda^{x}}{x!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\boldsymbol{X}=\left(X_{i}\right)_{i=1}^{N}/\forall i,j:\text{iid}\left(X_{i};X_{j}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\prod_{i=1}^{N}\frac{e^{-\lambda}\lambda^{x_{i}}}{x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{\sum_{i=1}^{N}x_{i}}e^{-\sum_{i=1}^{N}\lambda}\prod_{i=1}^{N}\frac{1}{x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{N\overline{X}}e^{-N\lambda}\cdot\left(\prod_{i=1}^{N}\frac{1}{x_{i}!}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\prod_{i=1}^{N}\frac{1}{x_{i}!}$
+\end_inset
+
+ es una constante que no introduce dificultad alguna, así que por un rato
+ la vamos a llamar arbitrariamente 
+\begin_inset Formula $C$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=C\cdot\left(N\overline{X}\cdot\lambda^{N\overline{X}-1}e^{-N\lambda}-\lambda^{N\overline{X}}\cdot Ne^{-N\lambda}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\lambda}=\lambda\in\mathbb{R}/\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $A\cdot B=0\Rightarrow A=0\vee B=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\forall x_{i}\in\mathbb{N}:\frac{1}{x_{i}!}\neq0\Rightarrow C\neq0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+N\overline{X}\cdot\lambda^{N\overline{X}-1}e^{-N\lambda}-\lambda^{N\overline{X}}\cdot Ne^{-N\lambda}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{\lambda}^{N\overline{X}-1}N\left(\overline{X}e^{N\hat{\lambda}}-\hat{\lambda}e^{N\hat{\lambda}}\right)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\hat{\lambda}^{N\overline{X}-1}N\neq0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\overline{X}e^{N\hat{\lambda}}-\lambda e^{N\hat{\lambda}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula 
+\[
+\overline{X}=\hat{\lambda}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Con Logverosimilitud
+\end_layout
+
+\begin_layout Standard
+Primero obtenemos la verosimilitud del parámetro, que no es más que la probabili
+dad conjunta:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathcal{L}(\lambda)=p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{n\overline{X}}e^{-n\lambda}\cdot\left(\prod_{i=1}^{n}\frac{1}{x_{i}!}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Queremos maximizar la verosimilitud.
+ Aplicamos logaritmo para luego derivar más fácilmente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\ln\mathcal{L}(\lambda)=\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=n\overline{X}\cdot\ln\left(\lambda\right)-n\lambda+\ln\left(\prod_{i=1}^{n}\frac{1}{x_{i}!}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Derivamos con respecto a 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ e igualamos a cero para buscar el valor del parámetro que maximiza esa
+ función:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial\lambda}\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=\frac{n\overline{X}}{\lambda}-n+0=\frac{n\overline{X}}{\lambda}-n=n\left(\frac{\overline{X}}{\lambda}-1\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\lambda}=\lambda\in\mathbb{R}/\frac{\partial}{\partial\lambda}\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n\left(\frac{\overline{X}}{\hat{\lambda}}-1\right)=0
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\frac{\overline{X}}{\hat{\lambda}}-1 & =0
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\overline{X}}{\hat{\lambda}}=1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula 
+\[
+\hat{\lambda}=\overline{X}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Comprobamos que el estimador de máxima verosimilitud para 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ coincide con el del método de los momentos basado en el primer momento.
+\end_layout
+
+\begin_layout Section
+Propiedades del estimador 
+\begin_inset Formula $\hat{\lambda}=\overline{X}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+El estadístico T es suficiente
+\end_layout
+
+\begin_layout Standard
+Dada la función de la muestra 
+\begin_inset Formula $T=r(\text{\underbar{X}})=\sum_{i=1}^{n}X_{i}$
+\end_inset
+
+, vamos a ver que se trata de un estadístico suficiente para 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+ Podemos factorizar la función de probabilidad conjunta del siguiente modo:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p(\underline{x},\lambda)=\prod_{i=1}^{n}e^{-\lambda}\frac{\lambda^{x_{i}}}{x_{i}!}=e^{-n\lambda}\frac{\lambda^{\sum_{i=1}^{n}x_{i}}}{\prod_{i=1}^{n}x_{i}!}=e^{-n\lambda}e^{\ln(\lambda)\sum_{i=1}^{n}x_{i}}\frac{1}{\prod_{i=1}^{n}x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $A(\lambda)=e^{-n\lambda}$
+\end_inset
+
+, 
+\begin_inset Formula $r_{1}(\underline{x})=\sum_{i=1}^{n}x_{i}$
+\end_inset
+
+, 
+\begin_inset Formula $c_{1}(\lambda)=\ln(\lambda)$
+\end_inset
+
+, 
+\begin_inset Formula $h(\underline{x})=\frac{1}{\prod_{i=1}^{n}x_{i}!}$
+\end_inset
+
+.
+ Comprobamos que la distribución Poisson es una familia exponencial a un
+ parámetro.
+ Por ende, dada una muestra aleatoria 
+\begin_inset Formula $X_{1},X_{2},...,X_{n}\overset{iid}{\sim}\mathcal{P}(\lambda)$
+\end_inset
+
+, el estadístico 
+\begin_inset Formula $T=\sum_{i=1}^{n}X_{i}$
+\end_inset
+
+es suficiente para el parámetro 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+El estadístico T es completo
+\end_layout
+
+\begin_layout Standard
+Poisson es una familia exponencial a un parámetro.
+ Sea:
+\begin_inset Formula 
+\[
+\Lambda=\{\ln(\lambda):\lambda\in\mathbb{R^{+}}\}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Observamos que si 
+\begin_inset Formula $\lambda\in(0,1)$
+\end_inset
+
+, entonces 
+\begin_inset Formula $\ln(\lambda)\in(-\infty,0)$
+\end_inset
+
+, mientras que si 
+\begin_inset Formula $\lambda\in(1,+\infty)$
+\end_inset
+
+, entonces 
+\begin_inset Formula $\ln(\lambda)\in(0,+\infty)$
+\end_inset
+
+, de modo que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\Lambda=\mathbb{R}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como 
+\begin_inset Formula $\Lambda$
+\end_inset
+
+ contiene una bola en 
+\begin_inset Formula $\mathbb{R},$
+\end_inset
+
+ el estadístico 
+\begin_inset Formula $T=\sum_{i=1}^{n}X_{i}$
+\end_inset
+
+ es completo.
+\end_layout
+
+\begin_layout Subsection
+El estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es insesgado
+\end_layout
+
+\begin_layout Standard
+Sea 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\delta_{n}(T)=\frac{T}{n}=\overline{X}$
+\end_inset
+
+ un estimador de 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ basado en el estadístico suficiente y completo 
+\begin_inset Formula $T=\sum_{i=1}^{n}X_{i}$
+\end_inset
+
+.
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ Veamos que la esperanza del estimador equivale al parámetro a estimar:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbb{E}_{\lambda}[\overline{X}]=\frac{1}{n}\sum_{i=1}^{n}\mathbb{E}_{\lambda}[X_{i}]=\frac{1}{n}\sum_{i=1}^{n}\lambda=\frac{n}{n}\lambda=\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbb{E}_{\lambda}[\overline{X}]=\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Comprombamos que el estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es insesgado.
+\end_layout
+
+\begin_layout Subsection
+El estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es IMVU
+\end_layout
+
+\begin_layout Standard
+Vimos que el estadístico T es suficiente y completo y que el estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ basado en T es insesgado.
+ Por ende, el estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es IMVU.
+\end_layout
+
+\begin_layout Subsection
+El estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es fuerte y débilmente consistente
+\end_layout
+
+\begin_layout Standard
+Dado que la muestra construida con eventos que siguen una distribución Poisson
+ cumple las hipótesis de tener elementos iid que siguen una distribución
+ tal que la esperanza de su módulo es finita, se sigue por la Ley Fuerte
+ de los Grandes Números que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\overline{X}\xrightarrow[n\to\infty]{cs}\mathbb{E}[X_{1}]=\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De la afirmación anterior se sigue inmediatamente la consistencia fuerte
+ del estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+.
+ Como la convergencia casi segura implica convergencia en probabilidad,
+ el estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ también es débilmente consistente.
+\end_layout
+
+\begin_layout Subsection
+Error Cuadrático Medio de 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como las variables 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ son iid, tenemos que la varianza del estimador es:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Var}_{\lambda}\left(\frac{1}{n}\sum_{i=1}^{n}X_{i}\right)=\frac{1}{n^{2}}\sum_{i=1}^{n}X_{i}=\frac{1}{n^{2}}n\cdot\lambda=\frac{\lambda}{n}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Var}_{\lambda}\left(\overline{X}\right)=\frac{\lambda}{n}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como se trata de un estimador insesgado, su ECM coincide con su varianza:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{ECM}\left(\overline{X}\right)=\frac{\lambda}{n}+0^{2}=\frac{\lambda}{n}=\mathrm{Var}_{\lambda}(\overline{X})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Adicionalmente, observamos que el error tiende a cero:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\lim_{n\to\infty}\text{ECM}\left(\overline{X}\right)=\lim_{n\to\infty}\frac{\lambda}{n}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+La varianza de 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ alcanza la cota de Rao-Cramér
+\end_layout
+
+\begin_layout Standard
+Vimos que la varianza del estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es: 
+\begin_inset Formula $\mathrm{Var}_{\lambda}[\overline{X}]=\frac{\lambda}{n}$
+\end_inset
+
+.
+ Por el teorema de Rao-Cramér sabemos que la varianza de un estimador tiene
+ la siguiente cota inferior:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathrm{\mathrm{Var}_{\lambda}[\delta_{n}(\underline{X})]=\mathrm{Var}_{\lambda}[\overline{X}]}\geq\frac{[q^{\prime}(\lambda)]^{2}}{nI_{1}(\lambda)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En nuestro caso, tenemos que 
+\begin_inset Formula $q(\lambda)=\lambda$
+\end_inset
+
+, 
+\begin_inset Formula $q^{\prime}(\lambda)=1$
+\end_inset
+
+, 
+\begin_inset Formula $[q^{\prime}(\lambda)]^{2}=1$
+\end_inset
+
+.
+ Por otro lado, una manera de obtener el número de información de Fisher
+ es la siguiente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+I_{1}(\lambda)=-E_{\lambda}\left[\frac{\partial^{2}}{\partial\lambda^{2}}\ln p(X,\lambda)\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En nuestro caso, tenemos:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p(x,\lambda)=\frac{\lambda^{x}}{x!}e^{-\lambda}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\ln p(x,\lambda)=x\ln(\lambda)-\ln(x!)-\lambda
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial\lambda}\ln p(x,\lambda)=\frac{x}{\lambda}-1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial^{2}}{\partial\lambda^{2}}\ln p(x,\lambda)=-\frac{x}{\lambda^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+I_{1}(\lambda)=-\mathbb{E}_{\lambda}\left[-\frac{X}{\lambda^{2}}\right]=\frac{1}{\lambda^{2}}\mathbb{E}_{\lambda}[X]=\frac{\lambda}{\lambda^{2}}=\frac{1}{\lambda}
+\]
+
+\end_inset
+
+La cota de Rao-Cramér queda entonces como:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{[q^{\prime}(\lambda)]^{2}}{nI_{1}(\lambda)}=\frac{1}{n\frac{1}{\lambda}}=\frac{\lambda}{n}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+lo que equivale a la varianza del estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+, de modo que el estimador alcanza su cota de Rao-Cramér (y por ende es
+ IMVU).
+\end_layout
+
+\begin_layout Subsection
+El estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es asintóticamente normal y eficiente
+\end_layout
+
+\begin_layout Standard
+Para que un estimador 
+\begin_inset Formula $\delta_{n}$
+\end_inset
+
+ sea asintóticamente normal y eficiente (ANE), debe cumplir que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sqrt{n}(\delta_{n}-q(\theta))\xrightarrow[n\to\infty]{\mathcal{D}}\mathcal{N}\left(0,\frac{[q^{\prime}(\lambda)]^{2}}{I_{1}(\lambda)}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para nuestro estimador, vimos que 
+\begin_inset Formula $[q^{\prime}(\lambda)]^{2}=1$
+\end_inset
+
+ y que 
+\begin_inset Formula $I_{1}(\lambda)=\frac{1}{\lambda}$
+\end_inset
+
+, de modo que es ANE si cumple que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sqrt{n}(\overline{X}-\lambda)\xrightarrow[n\to\infty]{\mathcal{D}}\mathcal{N}(0,\lambda)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por el Teorema del Límite Central, sabemos que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sqrt{n}(\overline{X}-\mathbb{E}[X])\xrightarrow[n\to\infty]{\mathcal{D}}\mathcal{N}(0,\mathrm{Var}[X])
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con una v.
+ a.
+ distribuida como Poisson, tenemos que 
+\begin_inset Formula $\mathbb{E}[X]=\lambda$
+\end_inset
+
+ y 
+\begin_inset Formula $\mathrm{Var}[X]=\lambda$
+\end_inset
+
+.
+ Así pues, el TLC afirma:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sqrt{n}(\overline{X}-\lambda)\xrightarrow[n\to\infty]{\mathcal{D}}\mathcal{N}(0,\lambda)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Esta afirmación coincide exactamente con lo que queríamos mostrar.
+ En consecuencia, el estimador 
+\begin_inset Formula $\overline{X}$
+\end_inset
+
+ es ANE.
+\end_layout
+
+\end_body
+\end_document

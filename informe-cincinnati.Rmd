@@ -19,7 +19,7 @@ Cargamos algunas librerías útiles:
 ```{r}
 library(MASS, pos = "package:base") # WARNING: Import before tidyverse to keep dplyr's `select`
 library(tidyverse)
-library(lubridate)
+library(lubridate, pos = "package:base")
 library(glue)
 library(here)
 library(knitr)
@@ -50,6 +50,13 @@ n_per_incident_type <- count_incidents_per_type(full_incidents)
 # Uncomment to print the list of incident types and their frequency:
 # kable(n_per_incident_type) 
 ```
+
+Lo que nos interesa es separar las llamadas según su tipo y ver la frecuencia de cada tipo, para eso por lo pronto las contamos, considerando que el período de los registros abarca unos tres años. 
+
+### Tabla con los Primeros 30 Tipos de Incidente y su Frecuencia
+
+`r kable(n_per_incident_type[1:30, ])`
+
 ## Preparamos una Función que Analiza la Muestra para el Tipo de Evento Seleccionado Según Ambas Distribuciones
 
 ```{r}
