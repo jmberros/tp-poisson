@@ -6,7 +6,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-Veamos la consistencia del estimador. Construimos una sucesion de estimadores de lambda con los n primeros valores de la muestra para n a de 20 hasta el tamaño de la muestra. Comparamos esos valores a la estimacion de lambda sobre toda la muestra, tomada como el valor real del parametro.
+Veamos la consistencia del estimador. Construimos una sucesion de estimadores de lambda con los n primeros valores de la muestra para n a de 20 hasta el tamaño de la muestra. Comparamos esos valores a la estimacion de lambda sobre toda la muestra, tomada como el valor real del párametro.
 
 ```{r}
 library(knitr)
@@ -61,16 +61,16 @@ paste("Cota de Rao-Cramer calculada con la estimacion de lambda=",lambda_est/len
 ```
 Si la estimacion de lambda es correcta, se ve que el estimador es insesgado y alcanza la cota de Rao Cramer. Se ve IMVU.
 
-Veamos si el estimador es asintoticamente normal y eficiente.Comparamos la distribucion empirica del estimador a una normal con esperanza la estimacion de lambda y varianza la cota de Rao Cramer calculada con la estimacion de lambda.
+Veamos si el estimador es asintóticamente normal y eficiente. Comparamos la distribución empírica del estimador a una normal cuya esperanza es la estimacion de lambda y cuya varianza es la cota de Rao Cramer calculada con la estimación de lambda.
 
 ```{r}
 
 dist_asint<-function(N){
   estim_values<-dist_estimador_boot(N)
   fig<-ggplot()+
-      geom_density(aes(x=estim_values,color="Empirica"))+
+      geom_density(aes(x=estim_values,color="Empírica"))+
       stat_function(aes(x=c(min(estim_values),max(estim_values)),color="Normal"),fun=dnorm,args=list(mean=lambda_est,sd=sqrt(lambda_est/length(daily_incidents$n))))+
-    labs(title = paste("Densidad empirica del estimador con N=",N,"y la normal"), color="Densidad",x="")
+    labs(title = paste("Densidad empírica del estimador con N=",N,"y la normal"), color="Densidad",x="")
 return(fig)
 }
   
@@ -81,7 +81,4 @@ print(dist_asint(50000))
 
 ```
 
-El estimador se ve asintoticamente normal y eficiente.
-
-
-
+El estimador se ve asintóticamente normal y eficiente.
