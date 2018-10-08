@@ -972,5 +972,198 @@ Esta afirmación coincide exactamente con lo que queríamos mostrar.
  es ANE.
 \end_layout
 
+\begin_layout Section
+
+\lang spanish
+Distribución a Posteriori si Consideramos que a priori es Exponencial
+\end_layout
+
+\begin_layout Itemize
+
+\lang spanish
+No parece idóneo tomar la beta como distribución de los parámetros porque
+ 
+\begin_inset Formula $\lambda\in\mathbb{R}^{+}$
+\end_inset
+
+.
+ Probamos con la distribución exponencial.
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}}{\sum_{i=1}^{n}x_{i}!}\cdot\theta\cdot e^{-\theta\lambda}}{\int_{0}^{\infty}\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}}{\sum_{i=1}^{n}x_{i}!}\cdot\theta\cdot e^{-\theta\lambda}d\lambda}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\theta\lambda}}{\int_{0}^{\infty}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\lambda\left(\theta+1\right)}d\lambda}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+o una gamma 
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula $Y\sim\Gamma\left(\alpha;\lambda\right)\Rightarrow f_{Y}\left(y\right)=\frac{\lambda^{\alpha}}{\Gamma\left(\alpha\right)}e^{-\lambda y}y^{\alpha-1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula $\Lambda\sim\Gamma\left(\sum_{i=1}^{n}x_{i}+1;\theta+1\right)\Rightarrow f_{\lambda}\left(\lambda\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(x+1\right)}e^{-\left(\theta+1\right)\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{e^{-\lambda}\lambda^{x}\cdot e^{-\theta\lambda}}{\frac{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}\cdot\underbrace{\int_{0}^{\infty}\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\lambda\left(\theta+1\right)}d\lambda}_{1}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\cdot e^{-\lambda}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\theta\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula $p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\left(\theta+1\right)\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula $p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\left(\theta+1\right)\lambda}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+Es decir que la distribución es una gamma 
+\begin_inset Formula $\Lambda\sim\Gamma\left(\sum_{i=1}^{n}x_{i}+1;\theta+1\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+
+\lang spanish
+Si Buscamos Maximizar la probabilidad:
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}\cdot e^{-\left(\theta+1\right)\lambda}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{1}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}\lambda^{\sum_{i=1}^{n}x_{i}}}{e^{\left(\theta+1\right)\lambda}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{\lambda^{\sum_{i=1}^{n}x_{i}}}{e^{\left(\theta+1\right)\lambda}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang spanish
+\begin_inset Formula 
+\[
+p\left(\lambda|\boldsymbol{T}=t\right)=\frac{\left(\theta+1\right)^{\sum_{i=1}^{n}x_{i}+1}}{\Gamma\left(\sum_{i=1}^{n}x_{i}+1\right)}\cdot\frac{e^{\sum_{i=1}^{n}x_{i}\ln\lambda}}{e^{\left(\theta+1\right)\lambda}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\lang spanish
+\begin_inset Formula 
+\[
+\max\left(\sum_{i=1}^{n}x_{i}\ln\lambda-\left(\theta+1\right)\lambda\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

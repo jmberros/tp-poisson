@@ -990,6 +990,14 @@ No parece idóneo tomar la beta como distribución de los parámetros porque
  Probamos con la distribución exponencial.
 \end_layout
 
+\begin_layout Itemize
+
+\lang spanish
+Una mejora es tomar una clase más general de distribución, la Gamma.
+ Esto queda pendiente pero se observa que el procedimiento va a ser similar.
+ 
+\end_layout
+
 \begin_layout Standard
 
 \lang spanish
