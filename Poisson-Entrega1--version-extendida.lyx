@@ -3,7 +3,7 @@
 \begin_document
 \begin_header
 \save_transient_properties true
-\origin unavailable
+\origin /home/octavio/EstadísticaTeórica/tp-poisson/
 \textclass article
 \use_default_options true
 \maintain_unincluded_children false
@@ -121,6 +121,156 @@ Para obtener el estimador basado en el primer momento, igualamos:
 
 \begin_layout Section
 Estimador de Máxima Verosimilitud
+\end_layout
+
+\begin_layout Subsection
+Con verosimilitud 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+X\sim\text{P}\left(\lambda\right)\Rightarrow f_{X}\left(x\right)=\frac{e^{-\lambda}\lambda^{x}}{x!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\boldsymbol{X}=\left(X_{i}\right)_{i=1}^{N}/\forall i,j:\text{iid}\left(X_{i};X_{j}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\prod_{i=1}^{N}\frac{e^{-\lambda}\lambda^{x_{i}}}{x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{\sum_{i=1}^{N}x_{i}}e^{-\sum_{i=1}^{N}\lambda}\prod_{i=1}^{N}\frac{1}{x_{i}!}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{N\overline{X}}e^{-N\lambda}\cdot\left(\prod_{i=1}^{N}\frac{1}{x_{i}!}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\prod_{i=1}^{N}\frac{1}{x_{i}!}$
+\end_inset
+
+ es una constante que no introduce dificultad alguna, así que por un rato
+ la vamos a llamar arbitrariamente 
+\begin_inset Formula $C$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=C\cdot\left(N\overline{X}\cdot\lambda^{N\overline{X}-1}e^{-N\lambda}-\lambda^{N\overline{X}}\cdot Ne^{-N\lambda}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\lambda}=\lambda\in\mathbb{R}/\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $A\cdot B=0\Rightarrow A=0\vee B=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\forall x_{i}\in\mathbb{N}:\frac{1}{x_{i}!}\neq0\Rightarrow C\neq0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+N\overline{X}\cdot\lambda^{N\overline{X}-1}e^{-N\lambda}-\lambda^{N\overline{X}}\cdot Ne^{-N\lambda}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{\lambda}^{N\overline{X}-1}N\left(\overline{X}e^{N\hat{\lambda}}-\hat{\lambda}e^{N\hat{\lambda}}\right)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\hat{\lambda}^{N\overline{X}-1}N\neq0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\overline{X}e^{N\hat{\lambda}}-\lambda e^{N\hat{\lambda}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula 
+\[
+\overline{X}=\hat{\lambda}
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
