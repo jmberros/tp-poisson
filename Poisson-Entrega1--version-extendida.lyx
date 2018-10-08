@@ -123,168 +123,19 @@ Para obtener el estimador basado en el primer momento, igualamos:
 Estimador de Máxima Verosimilitud
 \end_layout
 
-\begin_layout Standard
-Lo hallamos tanto con verosimilitud como con logverosimilitud.
-\end_layout
-
-\begin_layout Subsection
-Con Verosimilitud
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-X\sim\text{P}\left(\lambda\right)\Rightarrow f_{X}\left(x\right)=\frac{e^{\lambda}\lambda^{-x}}{x!}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\boldsymbol{X}=\left(X_{i}\right)_{i=1}^{n}/\forall i,j:\text{iid}\left(X_{i};X_{j}\right)$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-p_{\lambda}\left(\boldsymbol{x}\right)=\prod_{i=1}^{n}\frac{e^{\lambda}\lambda^{-x_{i}}}{x_{i}!}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-\sum_{i=1}^{N}x_{i}}e^{\sum_{i=1}^{N}\lambda}\prod_{i=1}^{n}\frac{1}{x_{i}!}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-N\overline{X}}e^{n\lambda}\cdot\left(\prod_{i=1}^{n}\frac{1}{x_{i}!}\right)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\prod_{i=1}^{N}\frac{1}{x_{i}!}$
-\end_inset
-
- es una constante que no introduce dificultad alguna, así que por un rato
- la vamos a llamar arbitrariamente 
-\begin_inset Formula $C$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=C\cdot\left(-n\overline{X}\cdot\lambda^{-n\overline{X}-1}e^{n\lambda}+\lambda^{-n\overline{X}}\cdot ne^{n\lambda}\right)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\hat{\lambda}=\lambda\in\mathbb{R}/\frac{\partial}{\partial\lambda}p_{\lambda}\left(\boldsymbol{x}\right)=0$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $A\cdot B=0\Rightarrow A=0\vee B=0$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\forall x_{i}\in\mathbb{N}:\frac{1}{x_{i}!}\neq0\Rightarrow C\neq0$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
--n\overline{X}\cdot\hat{\lambda}^{-n\overline{X}-1}e^{n\hat{\lambda}}+\hat{\lambda}^{-n\overline{X}}\cdot ne^{n\hat{\lambda}}=0
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-\hat{\lambda}^{-n\overline{X}-1}n\left(-\overline{X}e^{n\hat{\lambda}}+\hat{\lambda}e^{n\hat{\lambda}}\right)=0
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\hat{\lambda}^{-n\overline{X}-1}n\neq0$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
--\overline{X}e^{n\hat{\lambda}}+\lambda e^{n\hat{\lambda}}=0
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula 
-\[
-\overline{X}=\hat{\lambda}
-\]
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Con Logverosimilitud
 \end_layout
 
 \begin_layout Standard
+Primero obtenemos la verosimilitud del parámetro, que no es más que la probabili
+dad conjunta:
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula 
 \[
-p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-n\overline{X}}e^{n\lambda}\cdot\left(\prod_{i=1}^{n}\frac{1}{x_{i}!}\right)
+\mathcal{L}(\lambda)=p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{n\overline{X}}e^{-n\lambda}\cdot\left(\prod_{i=1}^{n}\frac{1}{x_{i}!}\right)
 \]
 
 \end_inset
@@ -293,9 +144,14 @@ p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-n\overline{X}}e^{n\lambda}\cdot
 \end_layout
 
 \begin_layout Standard
+Queremos maximizar la verosimilitud.
+ Aplicamos logaritmo para luego derivar más fácilmente:
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula 
 \[
-\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=-n\overline{X}\cdot\ln\left(\lambda\right)+n\lambda+\ln\left(\prod_{i=1}^{n}\frac{1}{x_{i}!}\right)
+\ln\mathcal{L}(\lambda)=\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=n\overline{X}\cdot\ln\left(\lambda\right)-n\lambda+\ln\left(\prod_{i=1}^{n}\frac{1}{x_{i}!}\right)
 \]
 
 \end_inset
@@ -304,9 +160,18 @@ p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-n\overline{X}}e^{n\lambda}\cdot
 \end_layout
 
 \begin_layout Standard
+Derivamos con respecto a 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ e igualamos a cero para buscar el valor del parámetro que maximiza esa
+ función:
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula 
 \[
-\frac{\partial}{\partial\lambda}\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=-\frac{n\overline{X}}{\lambda}+n+0=n-\frac{n\overline{X}}{\lambda}=n\left(1-\frac{\overline{X}}{\lambda}\right)
+\frac{\partial}{\partial\lambda}\ln\left[p_{\lambda}\left(\boldsymbol{x}\right)\right]=\frac{n\overline{X}}{\lambda}-n+0=\frac{n\overline{X}}{\lambda}-n=n\left(\frac{\overline{X}}{\lambda}-1\right)
 \]
 
 \end_inset
@@ -324,8 +189,16 @@ p_{\lambda}\left(\boldsymbol{x}\right)=\lambda^{-n\overline{X}}e^{n\lambda}\cdot
 \begin_layout Standard
 \begin_inset Formula 
 \[
-n\left(1-\frac{\overline{X}}{\hat{\lambda}}\right)=0
+n\left(\frac{\overline{X}}{\hat{\lambda}}-1\right)=0
 \]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\frac{\overline{X}}{\hat{\lambda}}-1 & =0
+\end{align*}
 
 \end_inset
 
@@ -334,10 +207,9 @@ n\left(1-\frac{\overline{X}}{\hat{\lambda}}\right)=0
 
 \begin_layout Standard
 \begin_inset Formula 
-\begin{align*}
-1-\frac{\overline{X}}{\hat{\lambda}} & =0\\
-1= & \frac{\overline{X}}{\hat{\lambda}}
-\end{align*}
+\[
+\frac{\overline{X}}{\hat{\lambda}}=1
+\]
 
 \end_inset
 
@@ -353,6 +225,14 @@ n\left(1-\frac{\overline{X}}{\hat{\lambda}}\right)=0
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Comprobamos que el estimador de máxima verosimilitud para 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ coincide con el del método de los momentos basado en el primer momento.
 \end_layout
 
 \begin_layout Section
@@ -383,7 +263,7 @@ Dada la función de la muestra
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p(\underline{x},\lambda)=\prod_{i=1}^{n}e^{-\lambda}\frac{\lambda^{x_{i}}}{x_{i}!}=e^{-n\lambda}\frac{\lambda^{\sum_{i=1}^{n}x_{i}}}{\prod_{i=1}^{n}x_{i}!}=e^{-n\lambda}e^{\sum_{i=1}^{n}\ln(\lambda)x_{i}}\frac{1}{\prod_{i=1}^{n}x_{i}!}
+p(\underline{x},\lambda)=\prod_{i=1}^{n}e^{-\lambda}\frac{\lambda^{x_{i}}}{x_{i}!}=e^{-n\lambda}\frac{\lambda^{\sum_{i=1}^{n}x_{i}}}{\prod_{i=1}^{n}x_{i}!}=e^{-n\lambda}e^{\ln(\lambda)\sum_{i=1}^{n}x_{i}}\frac{1}{\prod_{i=1}^{n}x_{i}!}
 \]
 
 \end_inset
