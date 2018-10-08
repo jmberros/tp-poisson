@@ -1,7 +1,7 @@
 ## ------------------------------------------------------------------------
 library(MASS, pos = "package:base") # WARNING: Import before tidyverse to keep dplyr's `select`
 library(tidyverse)
-library(lubridate)
+library(lubridate, pos = "package:base")
 library(glue)
 library(here)
 library(knitr)
