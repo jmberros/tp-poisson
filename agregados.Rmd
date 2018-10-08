@@ -74,6 +74,8 @@ keep_incidents_of_type <- function(chosen_type) {
          )
 }
 
+# Esta función toma la tabla donde hay una entrada y fecha (redondeada) por evento y agrupa los eventos que ocurrieron en el mismo día. Además, añade los días de frecuencia 0 hallados a través de una simple diferencia entre las fechas extremas y la cantidad de días en la lista ingresada. 
+
 get_freq_by_date_table  <- function(kept_incidents) {
   daily_incidents_count <-
     kept_incidents$table %>%
@@ -104,13 +106,23 @@ get_freq_by_date_table  <- function(kept_incidents) {
 
   # Safety check:
   assertthat::assert_that((near(sum(daily_incidents_freq$density), 1)))
-  return(list(freq=daily_incidents_freq,count=daily_incidents_count))
+  return( list(
+               freq=daily_incidents_freq,
+               count=daily_incidents_count
+               )
+  )
 }
 
 build_chosen_incident_dataframe  <- function(chosen_type) {
   frame_by_date  <- keep_incidents_of_type(chosen_type)
   frame_by_freq <- get_freq_by_date_table(frame_by_date)
-  return(frame_by_freq)
+
+  # Asumiendo distribución Poisson, estimamos el parámetro como la media muestral:
+
+  frame_by_freq["lambda"]  <- mean(frame_by_freq$count$n)
+
+
+  return( frame_by_freq )
 }
 
 compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type) {
@@ -119,8 +131,8 @@ compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type) {
   daily_incidents_freq  <- chosen_incident_dataframe$freq
 
   
-  # Asumiendo distribución Poisson, estimamos el parámetro como la media muestral:
-  lambda_estimate <- mean(daily_incidents_count$n)
+
+  lambda_estimate <- chosen_incident_dataframe$lambda
 
   # Ajustamos el número de incidentes diario con la distribución Binomial Negativa
   # para comparar con la Poisson:
@@ -185,22 +197,60 @@ compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type) {
 
 # Corremos la comparación para todos los tipos de incidentes del dataset:
 
-```{r}
+```{r, cache == T}
+distribuciones_de_incidentes <- list()
+
 for (incident_type in n_per_incident_type$incident_type) {
   print(glue("Working with: {incident_type}"))
   comparison <- compare_poisson_and_bn_for_incident_type(incident_type)
   
   # Sanitize the incident type for the plot filename:
   name <- str_to_lower(incident_type)
-  name <- str_replace_all(name, " ", "_")
+
   name <- str_replace_all(name, "/", "-")
   
   filename <- here(glue("results/{name}.png"))
   ggsave(filename, comparison$fig, width = 10, height = 6)
   
+  distribuciones_de_incidentes[name] <- comparison
+
   print(comparison$fig)
 }
+
+saveRDS(distribuciones_de_incidentes,"incidentes.rds")
+
 ```
+
+## Comparamos el Costo de Ambas Predicciones Respecto a la Distribución Empírica
+
+En realidad para ser totalmente confiable este estudio necesita algún tipo de bootsrap como k-pliegues para evitar un sesgo hacia la confirmación pero consideramos que para los fines de este vistazo no es necesario.
+
+```{r}
+distribuciones_de_incidentes %>% 
+  map(~spread(.,density_type,density)) %>%
+    map(
+            ~mutate( . , error_p = (poisson - empirical)^2,
+                    error_bn = (negative_binomial - empirical)^2,
+                    )
+            ) -> distribuciones_de_incidentes
+  
+
+obtener_varianzas <- function(tabla) {
+  v_poisson <- sum(tabla$error_p)/nrow(tabla) 
+  v_binomial_neg <- sum(tabla$error_bn)/nrow(tabla) 
+  ganadora  <- ifelse(v_poisson <= v_binomial_neg,"poisson","binomial negativa : (")
+  return(list(ganadora=ganadora,varianza_poisson=v_poisson, varianza_binomial_negativa=v_binomial_neg))
+}
+
+distribuciones_de_incidentes %>% map(obtener_varianzas)  -> varianza_por_caso 
+
+son_poisson  <- which(map(varianza_por_caso,~.$ganadora=="poisson")==1)
+
+```
+
+
+
+## Trabajamos Con el Parámetro Lambda
 
 
 
