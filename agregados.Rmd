@@ -125,7 +125,7 @@ build_chosen_incident_dataframe  <- function(chosen_type) {
   return( frame_by_freq )
 }
 
-compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type) {
+compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type, graphic = T) {
   chosen_incident_dataframe  <- build_chosen_incident_dataframe(chosen_incident_type)
   daily_incidents_count  <- chosen_incident_dataframe$count
   daily_incidents_freq  <- chosen_incident_dataframe$freq
@@ -174,50 +174,67 @@ compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type) {
   poisson_color <- "ForestGreen"
   bn_color <- "IndianRed"
   empirical_color <- "#444444"
-  
-  fig <-
-    probabilities_per_n %>%
-    ggplot() +
-    aes(x = n, y = density, color = density_type) +
-    geom_point(alpha = .7) +
-    geom_line() +
-    scale_color_manual(values = c(empirical_color, bn_color, poisson_color)) +
-    labs(
-      title = glue("Número de '{chosen_incident_type}' por día"),
-      subtitle = "Ajuste de la distribución empírica con Poisson y Binomial Negativa",
-      y = "Densidad",
-      x = glue("Número de llamadas"))
-  
+ 
+  if (graphic == T ) {
+    fig <-
+      probabilities_per_n %>%
+      ggplot() +
+      aes(x = n, y = density, color = density_type) +
+      geom_point(alpha = .7) +
+      geom_line() +
+      scale_color_manual(values = c(empirical_color, bn_color, poisson_color)) +
+      labs(
+        title = glue("Número de '{chosen_incident_type}' por día"),
+        subtitle = "Ajuste de la distribución empírica con Poisson y Binomial Negativa",
+        y = "Densidad",
+        x = glue("Número de llamadas"))
+    return (list(
+      probabilities_per_n = probabilities_per_n,
+      fig = fig,
+      lambda_estimate = lambda_estimate
+    ))
+  } 
+
   return (list(
     probabilities_per_n = probabilities_per_n,
-    fig = fig
+    lambda_estimate = lambda_estimate
   ))
+  
+  
 }
 ```
 
 # Corremos la comparación para todos los tipos de incidentes del dataset:
 
 ```{r, cache == T}
-distribuciones_de_incidentes <- list()
+### Para generar los gráficos, cambiar la variable fija "generate_graphics"
+
+distribuciones_de_incidentes_largas <- list()
 
 for (incident_type in n_per_incident_type$incident_type) {
+  generate_graphics <- T
   print(glue("Working with: {incident_type}"))
-  comparison <- compare_poisson_and_bn_for_incident_type(incident_type)
+  comparison <- compare_poisson_and_bn_for_incident_type(incident_type, generate_graphics)
   
   # Sanitize the incident type for the plot filename:
   name <- str_to_lower(incident_type)
 
   name <- str_replace_all(name, "/", "-")
   
-  filename <- here(glue("results/{name}.png"))
-  ggsave(filename, comparison$fig, width = 10, height = 6)
-  
-  distribuciones_de_incidentes[name] <- comparison
+  distribuciones_de_incidentes_largas[[name]] <- list(nombre = name, tabla = comparison$probabilities_per_n, lambda = comparison$lambda_estimate)
+                                           
+ 
+  if (generate_graphics) {
+    filename <- here(glue("results/{name}.png"))
+    ggsave(filename, comparison$fig, width = 10, height = 6)
+    
 
-  print(comparison$fig)
+    print(comparison$fig)
+  }
+
 }
 
-saveRDS(distribuciones_de_incidentes,"incidentes.rds")
+saveRDS(distribuciones_de_incidentes_largas,"incidentes.rds")
 
 ```
 
@@ -226,7 +243,8 @@ saveRDS(distribuciones_de_incidentes,"incidentes.rds")
 En realidad para ser totalmente confiable este estudio necesita algún tipo de bootsrap como k-pliegues para evitar un sesgo hacia la confirmación pero consideramos que para los fines de este vistazo no es necesario.
 
 ```{r}
-distribuciones_de_incidentes %>% 
+distribuciones_de_incidentes_largas %>% 
+  map(~.$tabla) %>%
   map(~spread(.,density_type,density)) %>%
     map(
             ~mutate( . , error_p = (poisson - empirical)^2,
@@ -244,22 +262,68 @@ obtener_varianzas <- function(tabla) {
 
 distribuciones_de_incidentes %>% map(obtener_varianzas)  -> varianza_por_caso 
 
-son_poisson  <- which(map(varianza_por_caso,~.$ganadora=="poisson")==1)
+son_poisson  <- which(map( varianza_por_caso, ~.$ganadora == "poisson" ) == 1 )
+son_pascal  <- which(map( varianza_por_caso, ~.$ganadora == "binomial negativa : (" ) == 1 )
 
 ```
 
+Los eventos que tienen un comportamiento mejor descrito por la distribución de Poisson son los siguientes:
+
+`r kable(son_poisson)`
+
+Muchos más eventos tuvieron distribución binomial negativa (o fueron mejor explicados por ella)
+
+
+`r kable(son_pascal)`
 
 
 ## Trabajamos Con el Parámetro Lambda
 
+```{r distribución del parámetro}
+distribuciones_de_incidentes_largas %>% map_dbl(~.$lambda) -> vector_lambdas 
+
+lambdas <- tibble(nombre = names(vector_lambdas),lambda=unname(vector_lambdas))          
+
+lambdas %>% ggplot() + 
+  aes(x=lambda) +
+  geom_histogram(binwidth=1) 
 
 
+lambdas %>% mutate( distribucion = rep("empírica") ) %>% select (lambda,distribucion)  -> lambdas_larga 
+
+min_lambda <- min(lambdas_larga$lambda)
+max_lambda <- max(lambdas_larga$lambda)
+
+nro_de_intervalos <- 23
 
 
+lambdas_larga %>% mutate(Intervalo = cut(lambda,breaks= nro_de_intervalos,include.lowest=F, ordered = T ) ) %>% 
+  group_by(Intervalo) %>%
+  summarise(Frecuencia_emp = n()/nrow(lambdas_larga) ) -> lambdas_freq
+
+#Necesitamos obtener los valores centrales de cada intervalo. Esto es sorprendentemente trabajoso.
 
 
+cbind(inferior = as.numeric( sub("\\((.+),.*", "\\1", lambdas_freq$Intervalo) ),
+      superior = as.numeric( sub("[^,]*,([^]]*)\\]", "\\1", lambdas_freq$Intervalo) )) %>%
+as.tibble -> extremos
 
+lambdas_agrupada  <- bind_cols(lambdas_freq,extremos)
 
+lambdas_agrupada %>% mutate(lambda_centro=(superior-inferior)/2+inferior) -> lambdas_agrupada
 
+distribucion_lambda <- fitdistr(lambdas$lambda,"exponential")
+distribucion_gamma <- fitdistr(lambdas$lambda,"gamma")
 
+forma_g <- distribucion_gamma$estimate[1]
+tasa_g <- distribucion_gamma$estimate[2]
 
+lambdas_agrupada %>% mutate(
+                            Frecuencia_estimada_exp = dexp(lambda_centro,rate=distribucion_lambda$estimate),
+                            Frecuencia_estimada_gamma = dgamma(x=lambda_centro,shape=forma_g,rate=tasa_g)) -> lambdas_agrupada
+
+lambdas_larga <- gather(lambdas_agrupada,Frecuencia_emp,Frecuencia_estimada_exp,Frecuencia_estimada_gamma,key="Origen",value="Frec")
+
+ggplot(data = lambdas_larga, mapping = aes(x=lambda_centro,y=Frec, color = Origen )) +
+  geom_line()
+```
