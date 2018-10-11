@@ -199,8 +199,8 @@ compare_poisson_and_bn_for_incident_type <- function(chosen_incident_type, graph
     probabilities_per_n = probabilities_per_n,
     lambda_estimate = lambda_estimate
   ))
-  
-  
+
+
 }
 ```
 
@@ -251,7 +251,7 @@ distribuciones_de_incidentes_largas %>%
                     error_bn = (negative_binomial - empirical)^2,
                     )
             ) -> distribuciones_de_incidentes
-  
+
 
 obtener_varianzas <- function(tabla) {
   v_poisson <- sum(tabla$error_p)/nrow(tabla) 
@@ -305,7 +305,7 @@ lambdas_larga %>% mutate(Intervalo = cut(lambda,breaks= nro_de_intervalos,includ
 
 
 cbind(inferior = as.numeric( sub("\\((.+),.*", "\\1", lambdas_freq$Intervalo) ),
-      superior = as.numeric( sub("[^,]*,([^]]*)\\]", "\\1", lambdas_freq$Intervalo) )) %>%
+superior = as.numeric( sub("[^,]*,([^]]*)\\]", "\\1", lambdas_freq$Intervalo) )) %>%
 as.tibble -> extremos
 
 lambdas_agrupada  <- bind_cols(lambdas_freq,extremos)
@@ -335,7 +335,7 @@ Veamos la consistencia del estimador. Construimos una sucesion de estimadores de
 
 Elegimos el más frecuente de los eventos con comportamiento Poisson: hechos relacionados a partos.
 
-```{r}
+``` {r}
 evento <- n_per_incident_type[24,]$incident_type
   daily_incidents <-
     keep_incidents_of_type(evento)$table %>%
@@ -365,7 +365,7 @@ ggplot()+
 
 Estudiemos la distribucion del estimador. Generamos por bootstrap una muestra de N estimaciones del parametro de Poisson
 
-```{r}
+``` {r}
 dist_estimador_boot<-function(N){
   set.seed(42)
   estim_values<-c()
@@ -382,22 +382,24 @@ fig<-ggplot()+
       geom_density(aes(x=muestra_estim),color="RoyalBlue")+
       labs(title = paste("Funcion de probabilidad de la muestra de estimador de Poisson con N=",10000),x="")
 print(fig)
+
 ```
 
 La esperanza y la varianza del estimador estimadas sobre la muestra de valores obtenidas por Bootstrap son:
 
-```{r}
+``` {r}
 paste("Esperanza=",mean(muestra_estim))
 paste("Estimacion de lambda:",lambda_est)
 
 paste("Varianza=",var(muestra_estim))
 paste("Cota de Rao-Cramer calculada con la estimacion de lambda=",lambda_est/length(daily_incidents$n))
+
 ```
 Si la estimacion de lambda es correcta, se ve que el estimador es insesgado y alcanza la cota de Rao Cramer. Se ve IMVU.
 
 Veamos si el estimador es asintóticamente normal y eficiente. Comparamos la distribución empírica del estimador a una normal cuya esperanza es la estimacion de lambda y cuya varianza es la cota de Rao Cramer calculada con la estimación de lambda.
 
-```{r}
+``` {r}
 
 dist_asint<-function(N){
   estim_values<-dist_estimador_boot(N)
